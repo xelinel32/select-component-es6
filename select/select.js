@@ -2,12 +2,12 @@ const getTemplate = (data = [], placeholder) => {
   const text = placeholder ?? ''
   const listItems = data.map((item) => {
     return `
-      <li class="select__item">${item.value}</li>
+      <li class="select__item" data-type="item" data-id="${item.id}">${item.value}</li>
     `
   })
   return `
   <div class="select__input" data-type="input">
-    <span>${text}</span>
+    <span data-type="value">${text}</span>
     <i class="fa fa-chevron-down" aria-hidden="true" data-type="arrow"></i>
   </div>
   <div class="select__dropdown">
@@ -24,6 +24,7 @@ export class Select {
     this.options = options
     this.#render()
     this.#setup()
+    this.selectedId = null
   }
   // privat method es2020
   #render() {
@@ -35,12 +36,30 @@ export class Select {
     this.clickHandler = this.clickHandler.bind(this)
     this.$el.addEventListener('click', this.clickHandler)
     this.$arrow = this.$el.querySelector('[data-type="arrow"]')
+    this.$value = this.$el.querySelector('[data-type="value"]')
   }
   clickHandler(e) {
     const { type } = event.target.dataset // destructuring
     if (type === 'input') {
       this.toggle()
+    } else if (type === 'item') {
+      const id = e.target.dataset.id
+      this.select(id)
     }
+  }
+  select(id) {
+    this.selectedId = id
+    this.$value.textContent = this.current.value
+
+    this.$el.querySelectorAll('[data-type="item"]').forEach((el) => {
+      el.classList.remove('selected')
+    })
+    this.$el
+      .querySelector(`[data-id="${this.selectedId}"]`)
+      .classList.add('selected')
+  }
+  get current() {
+    return this.options.data.find((item) => item.id === this.selectedId)
   }
   get isOpen() {
     return this.$el.classList.contains('open')

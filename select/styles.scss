@@ -56,5 +56,8 @@ $selectpd: 0 10px;
       transition: background-color 0.15s ease-in-out;
       cursor: pointer;
     }
+    &.selected {
+      background-color: bisque;
+    }
   }
 }
