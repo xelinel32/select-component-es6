@@ -1,18 +1,18 @@
-const getTemplate = () => {
+const getTemplate = (data = [], placeholder) => {
+  const text = placeholder ?? ''
+  const listItems = data.map((item) => {
+    return `
+      <li class="select__item">${item.value}</li>
+    `
+  })
   return `
   <div class="select__input" data-type="input">
-    <span>Text</span>
+    <span>${text}</span>
     <i class="fa fa-chevron-down" aria-hidden="true" data-type="arrow"></i>
   </div>
   <div class="select__dropdown">
     <ul class="select__list">
-      <li class="select__item">123</li>
-      <li class="select__item">123</li>
-      <li class="select__item">123</li>
-      <li class="select__item">123</li>
-      <li class="select__item">123</li>
-      <li class="select__item">123</li>
-      <li class="select__item">123</li>
+      ${listItems.join('')}
     </ul>
   </div>
   `
@@ -21,13 +21,15 @@ const getTemplate = () => {
 export class Select {
   constructor(selector, options) {
     this.$el = document.querySelector(selector)
+    this.options = options
     this.#render()
     this.#setup()
   }
   // privat method es2020
   #render() {
+    const { placeholder, data } = this.options
     this.$el.classList.add('select')
-    this.$el.innerHTML = getTemplate()
+    this.$el.innerHTML = getTemplate(data, placeholder)
   }
   #setup() {
     this.clickHandler = this.clickHandler.bind(this)
