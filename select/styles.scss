@@ -1,0 +1,43 @@
+.app {
+  font-family: 'Consolas';
+  padding-top: 5rem;
+  display: flex;
+  justify-content: center;
+  &__wrap {
+    max-width: 500px;
+    width: 100%;
+  }
+}
+$height: 46px;
+$shadowbox: 2px 3px 5px rgba(0, 0, 0, 0.3);
+.select {
+  position: relative;
+  width: 100%;
+  &.open {
+    .select__dropdown {
+      display: block;
+    }
+  }
+  &__input {
+    border: 1px solid #ccc;
+    height: $height;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+  }
+  &__dropdown {
+    display: none;
+    position: absolute;
+    top: $height + 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    left: 0;
+    right: 0;
+    max-height: 200px;
+    overflow-y: auto;
+    box-shadow: $shadowbox;
+    padding: 0 10px;
+  }
+}
